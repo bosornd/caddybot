@@ -12,11 +12,10 @@ class ZoneController(Node):
         super().__init__('zone_controller')
 
         self.sound_publisher = self.create_publisher(String, '/sound', 10)
-        self.velocity_publisher = self.create_publisher(Velocity, '/velocity_out', 10)
-        self.velocity_subscription = self.create_subscription(Velocity, '/velocity_in', self.velocity_callback, 10)
+        self.velocity_publisher = self.create_publisher(Velocity, '/velocity/output', 10)
+        self.velocity_subscription = self.create_subscription(Velocity, '/velocity/input', self.velocity_callback, 10)
         self.zone_subscription = self.create_subscription(String, '/zone', self.zone_callback, 10)
         self.position_subscription = self.create_subscription(Point, '/position', self.position_callback, 10)
-
 
         self.zone_client = self.create_client(GetZone, 'get_zone')
         while not self.zone_client.wait_for_service(timeout_sec=1.0):

@@ -23,7 +23,7 @@ class Map(Node):
     def __init__(self):
         super().__init__('zone')
 
-        self.declare_parameter('map', 10)      # 10 points
+        self.declare_parameter('map', 'sample')      # 10 points
         self.map_filename = self.get_parameter('map').get_parameter_value().string_value
 
         self.load_map()

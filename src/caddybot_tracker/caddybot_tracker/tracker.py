@@ -9,16 +9,17 @@ class LiDARFilter(Node):
     def __init__(self):
         super().__init__('tracker')
 
+        self.declare_parameter('max_speed', 1.0)         # 1.0m/s
         self.declare_parameter('max_distance', 5.0)      # 5.0m
         self.declare_parameter('min_distance', 2.0)      # 2.0m, approaching till min_distance
-        self.declare_parameter('max_speed', 1.0)         # 1.0m/s
 
-        self.max_distance = self.get_parameter('max_distance').get_parameter_value().float_value
-        self.min_distance = self.get_parameter('min_distance').get_parameter_value().float_value
+        self.max_speed    = self.get_parameter('max_speed').get_parameter_value().double_value
+        self.max_distance = self.get_parameter('max_distance').get_parameter_value().double_value
+        self.min_distance = self.get_parameter('min_distance').get_parameter_value().double_value
 
         self.velocity_publisher = self.create_publisher(Velocity, '/velocity', 10)
-        self.sound_publisher = self.create_publisher(String, '/sound', 10)
-        self.subscription = self.create_subscription(LaserScan, '/scan', self.callback, 10)
+        self.sound_publisher    = self.create_publisher(String, '/sound', 10)
+        self.subscription       = self.create_subscription(LaserScan, '/scan', self.callback, 10)
 
         self.tracking = False
 

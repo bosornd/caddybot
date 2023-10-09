@@ -13,8 +13,8 @@ class LiDARFilter(Node):
         self.front_angle = self.get_parameter('front_angle').get_parameter_value().integer_value
         self.window_size = self.get_parameter('window_size').get_parameter_value().integer_value
 
-        self.publisher = self.create_publisher(LaserScan, '/scan_out', 10)
-        self.subscription = self.create_subscription(LaserScan, '/scan_in', self.callback, 10)
+        self.publisher    = self.create_publisher(LaserScan, '/scan/output', 10)
+        self.subscription = self.create_subscription(LaserScan, '/scan/input', self.callback, 10)
 
     def callback(self, msg):
         out = LaserScan()
