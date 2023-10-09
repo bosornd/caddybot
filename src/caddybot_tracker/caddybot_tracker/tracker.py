@@ -16,7 +16,7 @@ class LiDARFilter(Node):
         self.max_distance = self.get_parameter('max_distance').get_parameter_value().float_value
         self.min_distance = self.get_parameter('min_distance').get_parameter_value().float_value
 
-        self.actuator_publisher = self.create_publisher(Velocity, '/velocity', 10)
+        self.velocity_publisher = self.create_publisher(Velocity, '/velocity', 10)
         self.sound_publisher = self.create_publisher(String, '/sound', 10)
         self.subscription = self.create_subscription(LaserScan, '/scan', self.callback, 10)
 
@@ -59,7 +59,7 @@ class LiDARFilter(Node):
         actuator.angle = ((left + right) / 2 - center) * mgs.angle_increment
         actuator.speed = min(max_speed, (min_distance - self.min_distance) if min_distance > self.min_distance else 0)
         
-        self.actuator_publisher.publish(actuator)
+        self.velocity_publisher.publish(actuator)
 
 def main(args=None):
     rclpy.init(args=args)

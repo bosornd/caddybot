@@ -3,6 +3,8 @@ from rclpy.node import Node
 from sensor_msgs.msg import NavSatFix
 from geometry_msgs.msg import Point
 
+import utm
+
 class UTM(Node):
 
     def __init__(self):
@@ -13,10 +15,12 @@ class UTM(Node):
 
     def callback(self, msg):
         self.get_logger().info(f'latitude={msg.latitude}, longitude={msg.longitude}, altitude={msg.altitude}')
+        xy = utm.from_latlon(msg.latitude, msg.longitude)
 
         out = Point()
-
-        # todo - convert gps to utm
+        out.x = xy[0]
+        out.y = xy[1]
+        out.z = 0
 
         self.publisher.publish(out)
 
