@@ -2,3 +2,7 @@
 	path = src/caddybot_lidar/leishen_lidar
 	url = https://github.com/bosornd/Lslidar_ROS2_driver
 	branch = M10_V1.0
+[submodule "src/micro_ros_setup"]
+	path = src/micro_ros_setup
+	url = https://github.com/micro-ROS/micro_ros_setup.git
+	branch = humble
