@@ -20,6 +20,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
+            'fake_gps = caddybot_gps.fake_gps:main',
             'gps = caddybot_gps.gps:main',
             'utm = caddybot_gps.utm:main',
         ],

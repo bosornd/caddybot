@@ -1,6 +1,6 @@
 import rclpy
 from rclpy.node import Node
-from sensor_msgs.out import NavSatFix
+from sensor_msgs.msg import NavSatFix
 
 import serial
 from ublox_gps import UbloxGps
@@ -10,7 +10,7 @@ class GPS(Node):
     def __init__(self):
         super().__init__('gps')
 
-        self.declare_parameter('gps', '/dev/serial0')
+        self.declare_parameter('gps', '/dev/pts/0')
         self.device = self.get_parameter('gps').get_parameter_value().string_value
 
         self.publisher = self.create_publisher(NavSatFix, '/gps', 10)
