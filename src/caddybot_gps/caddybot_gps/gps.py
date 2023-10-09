@@ -38,7 +38,7 @@ class GPS(Node):
                 except (ValueError, IOError) as err:
                     print(err)
         finally:
-            port.close()
+            self.port.close()
 
 def main(args=None):
     rclpy.init(args=args)
