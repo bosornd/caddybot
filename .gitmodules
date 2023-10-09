@@ -1,0 +1,4 @@
+[submodule "src/caddybot_lidar/leishen_lidar"]
+	path = src/caddybot_lidar/leishen_lidar
+	url = https://github.com/bosornd/Lslidar_ROS2_driver
+	branch = M10_V1.0
