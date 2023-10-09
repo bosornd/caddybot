@@ -25,6 +25,8 @@ class GPS(Node):
                     geo = self.gps.geo_coords()
                     cov = self.gps.geo_cov()
 
+                    self.get_logger().info(f'latitude={geo.lat}, longitude={geo.lon}')
+
                     out = NavSatFix()
                     out.longitude = geo.lon
                     out.latitude = geo.lat
