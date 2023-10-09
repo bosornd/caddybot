@@ -9,16 +9,16 @@ find_package(rclc REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(caddybot_msgs REQUIRED)
 
-add_executable(${PROJECT_NAME} src/main.c)
+add_executable(mcu src/main.c)
 
-ament_target_dependencies(${PROJECT_NAME}
+ament_target_dependencies(mcu
   rcl
   rclc
   std_msgs
   caddybot_msgs
   )
 
-install(TARGETS ${PROJECT_NAME}
+install(TARGETS mcu
   DESTINATION lib/${PROJECT_NAME}
   )
 

@@ -6,11 +6,8 @@ def generate_launch_description():
         LifecycleNode(
             package='caddybot_gps',
             namespace='caddybot',
-            executable='gps',
+            executable='fake_gps',
             name='gps',
-            parameters=[
-                {'gps': '/dev/pts/0'},  # gps device
-            ]
         ),
         LifecycleNode(
             package='caddybot_gps',

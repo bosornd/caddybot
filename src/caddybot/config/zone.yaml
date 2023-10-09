@@ -1,0 +1,3 @@
+/zone:
+  ros__parameters: 
+    map: 'sample'
