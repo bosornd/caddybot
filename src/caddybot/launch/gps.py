@@ -6,10 +6,10 @@ def generate_launch_description():
         Node(
             package='caddybot_gps',
             namespace='caddybot',
-            executable='gps',       # 'fake_gps'
+            executable='fake_gps',      # 'gps' or 'fake_gps'
             name='gps',
             parameters=[
-                {'gps': '/dev/pts/0'},
+                {'gps': '/dev/pts/0'},  # gps device
             ]
         ),
         Node(
