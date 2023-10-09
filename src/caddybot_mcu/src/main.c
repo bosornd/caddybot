@@ -20,9 +20,6 @@ rcl_publisher_t mode_publisher;
 rcl_subscription_t velocity_subscriber;
 rcl_subscription_t led_subscriber;
 
-caddybot_msgs__msg__Velocity velocity_msg;
-std_msgs__msg__String led_msg;
-
 void velocity_subscription_callback(const void * msgin)
 {
 	const caddybot_msgs__msg__Velocity *velocity = (const caddybot_msgs__msg__Velocity *)msgin;
@@ -30,14 +27,12 @@ void velocity_subscription_callback(const void * msgin)
 	printf("MCU received velocity(speed=%lf, angle=%lf)\n", velocity->speed, velocity->angle);
 }
 
-
 void led_subscription_callback(const void * msgin)
 {
-	const std_msgs__msg__String * led = (const std_msgs__msg__String *)msgin;
+	const std_msgs__msg__String *led = (const std_msgs__msg__String *)msgin;
 
-	printf("MCU received LED(%s)\n", led->data.data);
+	printf("MCU received LED(%s)\n", led->data.data ? led->data.data : "NULL");
 }
-
 
 int main()
 {
@@ -60,14 +55,19 @@ int main()
 	// Create a best effort LED subscriber
 	RCCHECK(rclc_subscription_init_best_effort(&led_subscriber, &node, ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, String), "/led"));
 
+	caddybot_msgs__msg__Velocity* velocity_msg = caddybot_msgs__msg__Velocity__create();
+	std_msgs__msg__String* led_msg = std_msgs__msg__String__create();
 
 	// Create executor
 	rclc_executor_t executor = rclc_executor_get_zero_initialized_executor();
-	RCCHECK(rclc_executor_init(&executor, &support.context, 3, &allocator));
-	RCCHECK(rclc_executor_add_subscription(&executor, &velocity_subscriber, &velocity_msg, &velocity_subscription_callback, ON_NEW_DATA));
-	RCCHECK(rclc_executor_add_subscription(&executor, &led_subscriber, &led_msg, &led_subscription_callback, ON_NEW_DATA));
+	RCCHECK(rclc_executor_init(&executor, &support.context, 2, &allocator));
+	RCCHECK(rclc_executor_add_subscription(&executor, &velocity_subscriber, velocity_msg, &velocity_subscription_callback, ON_NEW_DATA));
+	RCCHECK(rclc_executor_add_subscription(&executor, &led_subscriber, led_msg, &led_subscription_callback, ON_NEW_DATA));
 
 	rclc_executor_spin(&executor);
+
+	caddybot_msgs__msg__Velocity__fini(velocity_msg);
+	std_msgs__msg__String__fini(led_msg);
 	
 	RCCHECK(rcl_publisher_fini(&mode_publisher, &node));
 	RCCHECK(rcl_subscription_fini(&velocity_subscriber, &node));
