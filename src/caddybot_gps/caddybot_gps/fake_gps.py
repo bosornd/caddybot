@@ -9,12 +9,6 @@ class GPS(Node):
 
         self.publisher = self.create_publisher(NavSatFix, '/gps', 10)
 
-        timer_period = 1  # seconds
-        self.timer = self.create_timer(timer_period, self.timer_callback)
-
-    def timer_callback(self):
-        self.get_logger().info('timer_callback')
-
 def main(args=None):
     rclpy.init(args=args)
 
