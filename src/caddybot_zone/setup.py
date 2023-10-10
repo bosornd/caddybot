@@ -13,7 +13,7 @@ setup(
         ('share/' + package_name, ['package.xml']),
         ('share/' + package_name + '/map', [os.path.join("map", f) for f in os.listdir("map")]),
     ],
-    install_requires=['setuptools'],
+    install_requires=['setuptools', 'shapely'],
     zip_safe=True,
     maintainer='Yong Jin, Cho',
     maintainer_email='drajin.cho@bosornd.com',

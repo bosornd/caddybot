@@ -11,7 +11,7 @@ setup(
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
     ],
-    install_requires=['setuptools', 'sparkfun-ublox-gps', 'utm'],
+    install_requires=['setuptools', 'pyserial', 'sparkfun-ublox-gps', 'utm'],
     zip_safe=True,
     maintainer='Yong Jin, Cho',
     maintainer_email='drajin.cho@bosornd.com',
