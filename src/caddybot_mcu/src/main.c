@@ -47,7 +47,7 @@ int main()
 	RCCHECK(rclc_node_init_default(&node, "caddybot_mcu", "", &support));
 
 	// Create a reliable mode publisher
-	RCCHECK(rclc_publisher_init_default(&mode_publisher, &node, ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, String), "/mode"));
+//	RCCHECK(rclc_publisher_init_default(&mode_publisher, &node, ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, String), "/mode"));
 
 	// Create a best effort velocity subscriber
 	RCCHECK(rclc_subscription_init_best_effort(&velocity_subscriber, &node, ROSIDL_GET_MSG_TYPE_SUPPORT(caddybot_msgs, msg, Velocity), "/velocity"));
