@@ -19,12 +19,28 @@ class LiDARFilter(Node):
 
         self.velocity_publisher = self.create_publisher(Velocity, '/velocity', 10)
         self.sound_publisher    = self.create_publisher(String, '/sound', 10)
-        self.subscription       = self.create_subscription(LaserScan, '/scan', self.callback, 10)
+        self.led_publisher      = self.create_publisher(String, '/led', 10)
+        self.scan_subscription  = self.create_subscription(LaserScan, '/scan', self.scan_callback, 10)
+        self.mode_subscription  = self.create_subscription(String, '/mode', self.mode_callback, 10)
 
+        self.mode = "None"
         self.tracking = False
 
+    def mode_callback(self, msg):
+        if self.mode != msg.data:
+            self.mode = msg.data
 
-    def callback(self, msg):
+            if self.mode != "tracker":
+                velocity = Velocity()
+                velocity.angle = 0
+                velocity.speed = 0
+                
+                self.velocity_publisher.publish(velocity)
+
+    def scan_callback(self, msg):
+        if self.mode != "tracker":
+            return
+
         scan = msg.ranges
         center = int(len(scan) / 2);
 
@@ -49,18 +65,20 @@ class LiDARFilter(Node):
         if not self.tracking and min_distance < self.max_distance:
             self.tracking = True
             self.sound_publisher.publish("tracker_start")
+            self.led_publisher.publish("tracker_start")
 
         if self.tracking and min_distance > self.max_distance:
             self.tracking = False
             self.sound_publisher.publish("tracker_lost")
+            self.led_publisher.publish("tracker_lost")
             min_distance = 0
             left = right
 
-        actuator = Actuator()
-        actuator.angle = ((left + right) / 2 - center) * mgs.angle_increment
-        actuator.speed = min(max_speed, (min_distance - self.min_distance) if min_distance > self.min_distance else 0)
+        velocity = Velocity()
+        velocity.angle = ((left + right) / 2 - center) * mgs.angle_increment
+        velocity.speed = min(max_speed, (min_distance - self.min_distance) if min_distance > self.min_distance else 0)
         
-        self.velocity_publisher.publish(actuator)
+        self.velocity_publisher.publish(velocity)
 
 def main(args=None):
     rclpy.init(args=args)
