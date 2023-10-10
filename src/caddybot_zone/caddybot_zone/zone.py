@@ -2,13 +2,15 @@ import rclpy
 from rclpy.node import Node
 from std_msgs.msg import String
 from geometry_msgs.msg import Point
-from caddybot_msgs.msg import GetZone
+from caddybot_msgs.srv import GetZone
 
 import os
 import json
 import shapely.geometry as sg
 
-MAP_DIRECTORY = os.sep.join(os.path.abspath(__file__).split(os.sep)[:-1]) + "/maps/"
+from ament_index_python.packages import get_package_share_directory
+
+MAP_DIRECTORY = os.path.join(get_package_share_directory('caddybot_zone'), 'map/')
 
 from dataclasses import dataclass
 
@@ -23,7 +25,7 @@ class Map(Node):
     def __init__(self):
         super().__init__('zone')
 
-        self.declare_parameter('map', 'sample')      # 10 points
+        self.declare_parameter('map', 'sample')
         self.map_filename = self.get_parameter('map').get_parameter_value().string_value
 
         self.load_map()
@@ -38,7 +40,7 @@ class Map(Node):
 
         self.map = []
         for zone in json_object["zones"]:
-            self.map.append(Zone(id=zone["id"], category=zone["category"], polygon=g.polygon.Polygon(zone["polygon"])))
+            self.map.append(Zone(id=zone["id"], category=zone["category"], polygon=sg.polygon.Polygon(zone["polygon"])))
 
     def get_zone(self, location):
         point = sg.Point([location.x, location.y])

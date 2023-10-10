@@ -2,7 +2,8 @@ import rclpy
 from rclpy.node import Node
 from std_msgs.msg import String
 from geometry_msgs.msg import Point
-from caddybot_msgs.msg import Velocity, GetZone
+from caddybot_msgs.msg import Velocity
+from caddybot_msgs.srv import GetZone
 
 import math
 

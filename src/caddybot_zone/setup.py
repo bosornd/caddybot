@@ -1,4 +1,5 @@
 from setuptools import find_packages, setup
+import os
 
 package_name = 'caddybot_zone'
 
@@ -10,6 +11,7 @@ setup(
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
+        ('share/' + package_name + '/map', [os.path.join("map", f) for f in os.listdir("map")]),
     ],
     install_requires=['setuptools'],
     zip_safe=True,

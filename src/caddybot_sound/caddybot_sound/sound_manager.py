@@ -2,6 +2,7 @@ import rclpy
 from rclpy.node import Node
 from std_msgs.msg import String
 
+import os
 import pygame
 
 DIRECTORY = os.sep.join(os.path.abspath(__file__).split(os.sep)[:-1]) + "/sounds/"
