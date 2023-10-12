@@ -76,6 +76,7 @@ $ ros2 topic pub --once /velocity caddybot_msgs/msg/Velocity '{speed: 0.8, angle
 
 ## architecture
 ![architecture by rqt_graph](/img/architecture.png)
+![architecture by rqt_graph](/img/architecture2.png)
 
 ## test micro-ros-agent
 1. in terminal 1,
