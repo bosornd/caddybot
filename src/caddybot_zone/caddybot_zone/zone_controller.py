@@ -17,10 +17,17 @@ class ZoneController(Node):
         self.velocity_subscription = self.create_subscription(Velocity, '/velocity/input', self.velocity_callback, 10)
         self.zone_subscription = self.create_subscription(String, '/zone', self.zone_callback, 10)
         self.position_subscription = self.create_subscription(Point, '/position', self.position_callback, 10)
+        self.mode_subscription  = self.create_subscription(String, '/mode', self.mode_callback, 10)
+
+        self.mode = "None"
 
         self.zone_client = self.create_client(GetZone, 'get_zone')
         while not self.zone_client.wait_for_service(timeout_sec=1.0):
             self.get_logger().info('service not available, waiting again...')
+
+    def mode_callback(self, msg):
+        if self.mode != msg.data:
+            self.mode = msg.data
 
     def get_zone(self, location):
         request = GetZone.Request()
@@ -50,10 +57,13 @@ class ZoneController(Node):
 
         zone = self.get_zone(location)
         if self.check_restricted_zone(zone):
-            msg.speed = 0
-            msg.angle = 0
+            if self.mode == "tracker":
+                msg.speed = 0
+                msg.angle = 0
 
-            self.sound_publisher.publish("hazard_stop")
+                self.sound_publisher.publish("hazard_stop")
+            else:
+                self.sound_publisher.publish("hazard_warn")
 
         self.velocity_publisher.publish(msg)
 
