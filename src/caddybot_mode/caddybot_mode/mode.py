@@ -1,6 +1,7 @@
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import String
+from caddybot_msgs.srv import GetMode
 
 class Mode(Node):
 
@@ -8,6 +9,16 @@ class Mode(Node):
         super().__init__('mode')
 
         self.publisher = self.create_publisher(String, '/mode', 10)
+        self.service = self.create_service(GetMode, 'get_mode', self.get_mode_callback)
+
+        self.mode = "Undefined"
+
+    def get_mode_callback(self, request, response):
+        response.mode = String()
+        response.mode.data = self.mode
+
+        return response
+
 
 def main(args=None):
     rclpy.init(args=args)
