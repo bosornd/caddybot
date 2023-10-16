@@ -58,7 +58,9 @@ class Map(Node):
     def get_zone_callback(self, request, response):
         location = request.location
         self.get_logger().info(f'get_zone from position=({location.x}, {location.y}, {location.z})')
-        # response.zone.data
+
+        response.zone = String()
+        response.zone.data = get_zone(location)
 
         return response
 
