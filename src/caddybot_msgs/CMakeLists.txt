@@ -16,6 +16,7 @@ find_package(rosidl_default_generators REQUIRED)
 rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/Velocity.msg"
   "srv/GetZone.srv"
+  "srv/GetMode.srv"
   DEPENDENCIES std_msgs geometry_msgs
 )
 
