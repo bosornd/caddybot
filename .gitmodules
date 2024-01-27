@@ -6,3 +6,9 @@
 	path = src/micro_ros_setup
 	url = https://github.com/micro-ROS/micro_ros_setup.git
 	branch = humble
+[submodule "src/caddybot_tracker/2D_lidar_person_detection"]
+	path = src/caddybot_tracker/2D_lidar_person_detection
+	url = https://github.com/bosornd/2D_lidar_person_detection
+[submodule "src/caddybot_positioner/ESKalmanFilter"]
+	path = src/caddybot_positioner/ESKalmanFilter
+	url = https://github.com/bosornd/ESKF
