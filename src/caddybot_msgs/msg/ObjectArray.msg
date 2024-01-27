@@ -1,0 +1,1 @@
+caddybot_msgs/Object[] objects

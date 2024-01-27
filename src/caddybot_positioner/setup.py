@@ -1,6 +1,7 @@
 from setuptools import find_packages, setup
+import os
 
-package_name = 'caddybot_tracker'
+package_name = 'caddybot_positioner'
 
 setup(
     name=package_name,
@@ -10,13 +11,12 @@ setup(
     zip_safe=True,
     maintainer='Yong Jin, Cho',
     maintainer_email='drajin.cho@bosornd.com',
-    description='Caddybot Tracker Module',
+    description='Caddybot Positioner Module',
     license='Apache-2.0',
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'segmenter = caddybot_tracker.segmenter:main',
-            'tracker = caddybot_tracker.tracker:main',
+            'positioner = caddybot_positioner.positioner:main',
         ],
     },
 )

@@ -14,13 +14,19 @@ def generate_launch_description():
          PythonLaunchDescriptionSource([dir, '/fake_gps.py'])
       ),
       IncludeLaunchDescription(
-         PythonLaunchDescriptionSource([dir, '/zone.py'])
+         PythonLaunchDescriptionSource([dir, '/map.py'])
+      ),
+      IncludeLaunchDescription(
+         PythonLaunchDescriptionSource([dir, '/positioner.py'])
       ),
       IncludeLaunchDescription(
          PythonLaunchDescriptionSource([dir, '/fake_lidar.py'])
       ),
       IncludeLaunchDescription(
          PythonLaunchDescriptionSource([dir, '/tracker.py'])
+      ),
+      IncludeLaunchDescription(
+         PythonLaunchDescriptionSource([dir, '/navigator.py'])
       ),
       IncludeLaunchDescription(
          PythonLaunchDescriptionSource([dir, '/sound.py'])

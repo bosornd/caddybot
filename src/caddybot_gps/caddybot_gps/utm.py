@@ -1,7 +1,7 @@
 import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import NavSatFix
-from geometry_msgs.msg import Point
+from caddybot_msgs.msg import Location
 
 import utm
 
@@ -10,17 +10,16 @@ class UTM(Node):
     def __init__(self):
         super().__init__('utm')
 
-        self.publisher = self.create_publisher(Point, '/position', 10)
+        self.publisher = self.create_publisher(Location, '/location', 10)
         self.subscription = self.create_subscription(NavSatFix, '/gps', self.callback, 10)
 
     def callback(self, msg):
         self.get_logger().info(f'latitude={msg.latitude}, longitude={msg.longitude}, altitude={msg.altitude}')
         xy = utm.from_latlon(msg.latitude, msg.longitude)
 
-        out = Point()
+        out = Location()
         out.x = xy[0]
         out.y = xy[1]
-        out.z = 0
 
         self.publisher.publish(out)
 

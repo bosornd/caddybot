@@ -1,89 +1,33 @@
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import String
-from sensor_msgs.msg import LaserScan
-from caddybot_msgs.msg import Velocity
+from caddybot_msgs.msg import Object
+from caddybot_msgs.msg import ObjectArray
+from caddybot_msgs.msg import RegionArray
 
-class LiDARFilter(Node):
+class Tracker(Node):
 
     def __init__(self):
         super().__init__('tracker')
 
-        self.declare_parameter('max_speed', 1.0)         # 1.0m/s
-        self.declare_parameter('max_distance', 5.0)      # 5.0m
-        self.declare_parameter('min_distance', 2.0)      # 2.0m, approaching till min_distance
+        self.publisher            = self.create_publisher(ObjectArray, '/objects', 10)
+        self.robot_subscription   = self.create_subscription(Object, '/robot', self.robot_callback, 10)
+        self.regions_subscription = self.create_subscription(RegionArray, '/regions', self.regions_callback, 10)
 
-        self.max_speed    = self.get_parameter('max_speed').get_parameter_value().double_value
-        self.max_distance = self.get_parameter('max_distance').get_parameter_value().double_value
-        self.min_distance = self.get_parameter('min_distance').get_parameter_value().double_value
+        self.objects = ObjectArray()
 
-        self.velocity_publisher = self.create_publisher(Velocity, '/velocity', 10)
-        self.sound_publisher    = self.create_publisher(String, '/sound', 10)
-        self.led_publisher      = self.create_publisher(String, '/led', 10)
-        self.scan_subscription  = self.create_subscription(LaserScan, '/scan', self.scan_callback, 10)
-        self.mode_subscription  = self.create_subscription(String, '/mode', self.mode_callback, 10)
+    def robot_callback(self, msg):
+        self.robot = msg
 
-        self.mode = "None"
-        self.tracking = False
-
-    def mode_callback(self, msg):
-        if self.mode != msg.data:
-            self.mode = msg.data
-
-            if self.mode != "tracker":
-                velocity = Velocity()
-                velocity.angle = 0
-                velocity.speed = 0
-                
-                self.velocity_publisher.publish(velocity)
-
-    def scan_callback(self, msg):
-        if self.mode != "tracker":
-            return
-
-        scan = msg.ranges
-        center = int(len(scan) / 2);
-
-        min_distance = scan[center]
-
-        left = center
-        distance = scan[center]
-        while left > 0 and abs(scan[left - 1] - distance) < 0.5:
-            left -= 1
-            distance = scan[left]
-            if distance < min_distance:
-                min_distance = distance
-
-        right = center
-        distance = scan[center]
-        while right < len(scan) and abs(scan[right + 1] - distance) < 0.5:
-            right += 1
-            distance = scan[right]
-            if distance < min_distance:
-                min_distance = distance
-
-        if not self.tracking and min_distance < self.max_distance:
-            self.tracking = True
-            self.sound_publisher.publish("tracker_start")
-            self.led_publisher.publish("tracker_start")
-
-        if self.tracking and min_distance > self.max_distance:
-            self.tracking = False
-            self.sound_publisher.publish("tracker_lost")
-            self.led_publisher.publish("tracker_lost")
-            min_distance = 0
-            left = right
-
-        velocity = Velocity()
-        velocity.angle = ((left + right) / 2 - center) * mgs.angle_increment
-        velocity.speed = min(max_speed, (min_distance - self.min_distance) if min_distance > self.min_distance else 0)
+    def regions_callback(self, msg):
+        # Todo. trace objects by kalman filter
         
-        self.velocity_publisher.publish(velocity)
+        self.publisher.publish(self.objects)
 
 def main(args=None):
     rclpy.init(args=args)
 
-    node = LiDARFilter()
+    node = Tracker()
     rclpy.spin(node)
 
     # Destroy the node explicitly

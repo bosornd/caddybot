@@ -1,3 +1,2 @@
 caddybot_msgs/Location location
----
-std_msgs/String zone
+caddybot_msgs/Location velocity

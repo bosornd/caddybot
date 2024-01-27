@@ -23,7 +23,6 @@ $ rosdep install --from-paths src --ignore-src --rosdistro humble -y
 ```
 ```
 $ pip install pygame
-$ pip install shapely
 $ pip install pyserial sparkfun-ublox-gps utm
 ```
 4. build
@@ -79,4 +78,4 @@ $ ros2 topic pub --once /velocity caddybot_msgs/msg/Velocity '{speed: 0.8, angle
 ```
 
 ## architecture
-![architecture by rqt_graph](/img/architecture2.png)
+![architecture by rqt_graph](/img/architecture.png)

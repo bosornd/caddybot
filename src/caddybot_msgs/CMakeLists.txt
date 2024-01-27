@@ -14,10 +14,14 @@ find_package(geometry_msgs REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 
 rosidl_generate_interfaces(${PROJECT_NAME}
+  "msg/Location.msg"
   "msg/Velocity.msg"
+  "msg/Object.msg"
+  "msg/ObjectArray.msg"
+  "msg/Region.msg"
+  "msg/RegionArray.msg"
   "srv/GetZone.srv"
-  "srv/GetMode.srv"
-  DEPENDENCIES std_msgs geometry_msgs
+  DEPENDENCIES std_msgs
 )
 
 if(BUILD_TESTING)
