@@ -78,4 +78,4 @@ $ ros2 topic pub --once /velocity caddybot_msgs/msg/Velocity '{speed: 0.8, angle
 ```
 
 ## architecture
-![architecture by rqt_graph](/img/architecture.png)
+![architecture](/img/architecture.png)
