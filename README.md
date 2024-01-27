@@ -35,11 +35,12 @@ $ source install/setup.bash
 ```
 $ ros2 run micro_ros_setup create_agent_ws.sh
 $ ros2 run micro_ros_setup build_agent.sh
-$ source install/setup.bash
 ```
 
 ## launch
+using terminal1(ROS2),
 ```
+$ source install/setup.bash
 $ ros2 launch caddybot bringup.py
 ```
 
@@ -62,41 +63,20 @@ $ source install/setup.bash
 ```
 $ ros2 run micro_ros_setup create_firmware_ws.sh host
 $ ros2 run micro_ros_setup build_firmware.sh
-$ source install/setup.bash
 ```
 
 ## launch MCU
+using terminal2(micro-ROS),
 ```
+$ source install/setup.bash
 $ ros2 launch caddybot_mcu mcu.py
 ```
-publishing a Velocity topic confirms that it is delivered to MCU through micro_ros_agent.
+using termianal3(ROS2),
+publishing a Velocity topic confirms that it is delivered to MCU via micro_ros_agent.
 ```
+$ source install/setup.bash
 $ ros2 topic pub --once /velocity caddybot_msgs/msg/Velocity '{speed: 0.8, angle: 0.0}'
 ```
 
 ## architecture
-![architecture by rqt_graph](/img/architecture.png)
 ![architecture by rqt_graph](/img/architecture2.png)
-
-## test micro-ros-agent
-1. in terminal 1,
-```
-$ ros2 run micro_ros_agent micro_ros_agent udp4 --port 8888
-```
-![micro_ros_agent starting](/img/micro_ros_agent1.png)
-
-2. in terminal 2,
-```
-$ export RMW_IMPLEMENTATION=rmw_microxrcedds
-$ ros2 run caddybot_mcu mcu
-```
-![MCU starting](/img/micro_ros_agent2.png)
-![micro_ros_agent connected](/img/micro_ros_agent3.png)
-
-3. in terminal 3,
-```
-$ ros2 topic pub --once /velocity caddybot_msgs/msg/Velocity '{speed: 0.8, angle: 0.0}'
-```
-![topic published](/img/micro_ros_agent4.png)
-![MCU received](/img/micro_ros_agent5.png)
-
