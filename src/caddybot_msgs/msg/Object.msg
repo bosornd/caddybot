@@ -1,2 +1,2 @@
 caddybot_msgs/Location location
-caddybot_msgs/Location velocity
+caddybot_msgs/Velocity velocity
